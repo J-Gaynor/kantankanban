@@ -7,12 +7,25 @@ import { FiSun, FiMoon } from "react-icons/fi";
 
 export default function KantanKanban() {
   const [darkMode, setDarkMode] = useState(true);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
+    if (!localStorage.getItem('tasks')) {
+      localStorage.setItem('tasks', '[]');
+    }
+    const savedTasks = JSON.parse(localStorage.getItem('tasks'));    
     const saved = localStorage.getItem('theme');
+
+
     if (saved === 'dark') setDarkMode(true);
     else if (saved === 'light') setDarkMode(false);
+
+    setTasks(savedTasks || []);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks])
 
   const toggleDarkMode = () => {
     const next = !darkMode;
@@ -29,15 +42,25 @@ export default function KantanKanban() {
             <b>To Do</b>
             <div>
               <div className='bg-blue text-left padding padding-sm'>
-                <Task/>
+                {tasks.map((task) => task.status === 'toDo' && <Task key={task.id} desc={task.desc}/>)}
               </div>
             </div>
           </div>
           <div className='col col-span-1 text-center border border-white dark'>
             <b>In Progress</b>
+            <div>
+              <div className='bg-blue text-left padding padding-sm'>
+                {tasks.map((task) => task.status === 'inProgress' && <Task key={task.id} desc={task.desc}/>)}
+              </div>
+            </div>
           </div>
           <div className='col col-span-1 text-center border border-white'>
             <b>Complete</b>
+            <div>
+              <div className='bg-blue text-left padding padding-sm'>
+                {tasks.map((task) => task.status === 'complete' && <Task key={task.id} desc={task.desc}/>)}
+              </div>
+            </div>
           </div>
         </main>
         <footer className="row-start-3 flex gap-[24px] flex-wrap items-center">
