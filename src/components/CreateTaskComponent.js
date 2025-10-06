@@ -1,39 +1,50 @@
-import { useState } from 'react'
+"use client";
+import React, { useState } from "react";
 
-export default function CreateNewTaskComponent() {
-    class TaskItem {
-        id = 0
-        desc = '';
-        status = 'toDo'
-    }
+export default function CreateNewTaskComponent({ onAdd, onClose }) {
+  const [desc, setDesc] = useState("");
 
-    const addTask = ({taskDesc}) => {
-        const tasks = JSON.parse(localStorage.get('tasks'));
-        const taskLength = tasks.keys.length();
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!desc.trim()) return;
 
-        const newTask = new(TaskItem);
-        newTask.id = taskLength
-        newTask.desc = taskDesc;
-        
-        tasks.taskLength = taskDesc;
-    }
+    const newTask = {
+      id: Date.now(),
+      desc,
+      status: "toDo",
+    };
 
+    onAdd(newTask);
+    setDesc("");
+  };
 
-    return (
-        <div>
-            <div className='grid grid-rows-2'> 
-                <form onSubmit={addTask(e)}>
-                    <input type='text' className='input textbox'/>
-                    <div className='grid grid-rows-2'> 
-                        <button className='btn border rounded-half bg-green-400 w-20 h-10 cursor-pointer hover:bg-green-800 transition-all duration-200' onClick={submit}>
-                            <b>Add</b>
-                        </button>
-                        <button className='btn border rounded-half bg-red-400 w-20 h-10 cursor-pointer hover:bg-red-800 transition-all duration-200'>
-                            <b>Discard</b>
-                        </button>
-                    </div>
-                </form>
-            </div>
+  return (
+    <div className="text-center">
+      <h2 className="font-bold mb-4">Create New Task</h2>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <input
+          type="text"
+          className="p-2 border rounded"
+          placeholder="Task description..."
+          value={desc}
+          onChange={(e) => setDesc(e.target.value)}
+        />
+        <div className="flex justify-center gap-4">
+          <button
+            type="submit"
+            className="btn bg-green-400 px-4 py-2 rounded hover:bg-green-600 transition-all"
+          >
+            Add
+          </button>
+          <button
+            type="button"
+            onClick={onClose}
+            className="btn bg-red-400 px-4 py-2 rounded hover:bg-red-600 transition-all"
+          >
+            Cancel
+          </button>
         </div>
-    )
+      </form>
+    </div>
+  );
 }
