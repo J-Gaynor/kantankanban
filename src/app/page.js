@@ -13,10 +13,16 @@ export default function KantanKanban() {
     if (!localStorage.getItem("tasks")) {
       localStorage.setItem("tasks", "[]");
     }
-    const savedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+    
+    try {
+      const savedTasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+      setTasks(Array.isArray(savedTasks) ? savedTasks : []);
+    } catch (error) {
+      console.error("Error loading tasks:", error);
+      setTasks([]);
+    }
+    
     const savedTheme = localStorage.getItem("theme");
-
-    setTasks(savedTasks || []);
     setDarkMode(savedTheme === "dark");
   }, []);
 
@@ -49,6 +55,19 @@ export default function KantanKanban() {
     const updatedTasks = tasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   };
+
+  const handleMoveRight = (id) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        if (task.id === id) {
+          if (task.status === "toDo") return { ...task, status: "inProgress" };
+          if (task.status === "inProgress") return { ...task, status: "complete" };
+        }
+        return task;
+      })
+    );
+  };
+  
 
   return (
     <div className={`${darkMode ? "dark" : ""} min-h-screen`}>
@@ -112,6 +131,8 @@ export default function KantanKanban() {
                     key={task.id}
                     task={task}
                     onDelete={() => handleDelete(task.id)}
+                    darkMode={darkMode}
+                    moveRight={() => {handleMoveRight(task.id)}}
                   />
                 ))}
             </div>
@@ -127,6 +148,7 @@ export default function KantanKanban() {
                     key={task.id}
                     task={task}
                     onDelete={() => handleDelete(task.id)}
+                    darkMode={darkMode}
                   />
                 ))}
             </div>
@@ -142,6 +164,7 @@ export default function KantanKanban() {
                     key={task.id}
                     task={task}
                     onDelete={() => handleDelete(task.id)}
+                    darkMode={darkMode}
                   />
                 ))}
             </div>
