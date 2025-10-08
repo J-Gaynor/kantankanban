@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from "react";
 import Task from "./containers/Task";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { DndContext } from '@dnd-kit/core';
+import DroppableColumn from '@/components/DroppableColumn';
 
 export default function KantanKanban() {
   const [darkMode, setDarkMode] = useState(true);
@@ -80,6 +82,19 @@ export default function KantanKanban() {
     );
   };
   
+  const handleDragEnd = (e) => {
+    const { active, over } = e;
+    if (!over) return;
+
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        if (task.id.toString() === active.id) {
+          return { ...task, status: over.id};
+        }
+        return task;
+      })
+    )
+  };
 
   return (
     <div className={`${darkMode ? "dark" : ""} min-h-screen`}>
@@ -133,57 +148,59 @@ export default function KantanKanban() {
         )}
 
         <main className="grid grid-rows-2 grid-cols-3 gap-[32px] row-start-2 items-start">
-          <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
-            <b>To Do</b>
-            <div className="bg-blue-400/20 text-left p-2 rounded-md mt-2">
-              {tasks
-                .filter((t) => t.status === "toDo")
-                .map((task) => (
-                  <Task
-                    key={task.id}
-                    task={task}
-                    onDelete={() => handleDelete(task.id)}
-                    darkMode={darkMode}
-                    moveRight={() => {handleMoveRight(task.id)}}
-                  />
-                ))}
+          <DndContext onDragEnd={handleDragEnd}>
+            <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
+              <b>To Do</b>
+              <DroppableColumn id={'toDo'} colour={'blue'}>
+                {tasks
+                  .filter((t) => t.status === "toDo")
+                  .map((task) => (
+                    <Task
+                      key={task.id}
+                      task={task}
+                      onDelete={() => handleDelete(task.id)}
+                      darkMode={darkMode}
+                      moveRight={() => {handleMoveRight(task.id)}}
+                    />
+                  ))}
+              </DroppableColumn>
             </div>
-          </div>
 
-          <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
-            <b>In Progress</b>
-            <div className="bg-yellow-400/20 text-left p-2 rounded-md mt-2">
-              {tasks
-                .filter((t) => t.status === "inProgress")
-                .map((task) => (
-                  <Task
-                    key={task.id}
-                    task={task}
-                    onDelete={() => handleDelete(task.id)}
-                    darkMode={darkMode}
-                    moveRight={() => {handleMoveRight(task.id)}}
-                    moveLeft={() => {handleMoveLeft(task.id)}}
-                  />
-                ))}
+            <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
+              <b>In Progress</b>
+              <DroppableColumn id={'inProgress'} colour={'yellow'}>
+                {tasks
+                  .filter((t) => t.status === "inProgress")
+                  .map((task) => (
+                    <Task
+                      key={task.id}
+                      task={task}
+                      onDelete={() => handleDelete(task.id)}
+                      darkMode={darkMode}
+                      moveRight={() => {handleMoveRight(task.id)}}
+                      moveLeft={() => {handleMoveLeft(task.id)}}
+                    />
+                  ))}
+              </DroppableColumn>
             </div>
-          </div>
 
-          <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
-            <b>Complete</b>
-            <div className="bg-green-400/20 text-left p-2 rounded-md mt-2 gap-2">
-              {tasks
-                .filter((t) => t.status === "complete")
-                .map((task) => (
-                  <Task
-                    key={task.id}
-                    task={task}
-                    onDelete={() => handleDelete(task.id)}
-                    darkMode={darkMode}
-                    moveLeft={() => {handleMoveLeft(task.id)}}
-                  />
-                ))}
+            <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
+              <b>Complete</b>
+              <DroppableColumn id={'complete'} colour={'green'}>
+                {tasks
+                  .filter((t) => t.status === "complete")
+                  .map((task) => (
+                    <Task
+                      key={task.id}
+                      task={task}
+                      onDelete={() => handleDelete(task.id)}
+                      darkMode={darkMode}
+                      moveLeft={() => {handleMoveLeft(task.id)}}
+                    />
+                  ))}
+              </DroppableColumn>
             </div>
-          </div>
+          </DndContext>
         </main>
 
         <footer className="row-start-3 flex gap-[24px] flex-wrap items-center">
