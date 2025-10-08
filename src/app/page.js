@@ -67,6 +67,18 @@ export default function KantanKanban() {
       })
     );
   };
+
+  const handleMoveLeft = (id) => {
+    setTasks((prevTasks) =>
+      prevTasks.map((task) => {
+        if (task.id === id) {
+          if (task.status === "inProgress") return { ...task, status: "toDo" };
+          if (task.status === "complete") return { ...task, status: "inProgress" };
+        }
+        return task;
+      })
+    );
+  };
   
 
   return (
@@ -149,6 +161,8 @@ export default function KantanKanban() {
                     task={task}
                     onDelete={() => handleDelete(task.id)}
                     darkMode={darkMode}
+                    moveRight={() => {handleMoveRight(task.id)}}
+                    moveLeft={() => {handleMoveLeft(task.id)}}
                   />
                 ))}
             </div>
@@ -156,7 +170,7 @@ export default function KantanKanban() {
 
           <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
             <b>Complete</b>
-            <div className="bg-green-400/20 text-left p-2 rounded-md mt-2">
+            <div className="bg-green-400/20 text-left p-2 rounded-md mt-2 gap-2">
               {tasks
                 .filter((t) => t.status === "complete")
                 .map((task) => (
@@ -165,6 +179,7 @@ export default function KantanKanban() {
                     task={task}
                     onDelete={() => handleDelete(task.id)}
                     darkMode={darkMode}
+                    moveLeft={() => {handleMoveLeft(task.id)}}
                   />
                 ))}
             </div>

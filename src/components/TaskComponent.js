@@ -1,7 +1,7 @@
 import React from 'react';
 import { FiTrash, FiArrowRight, FiArrowLeft, FiArrowRightLeft } from "react-icons/fi";
 
-export default function TaskComponent({ task, onDelete, darkMode, moveRight }) {
+export default function TaskComponent({ task, onDelete, darkMode, moveRight, moveLeft }) {
   return (
     <div className="cursor-pointer px-3 pt-4 rounded-md">
       <p className="whitespace-normal break-words">{task.desc}</p>
@@ -25,7 +25,7 @@ export default function TaskComponent({ task, onDelete, darkMode, moveRight }) {
                     ${darkMode
                     ? "border bg-gray-700 text-white hover:bg-blue-500"
                     : "border bg-gray-400 text-black hover:bg-blue-400"}`}
-                    onClick={moveRight}
+                    onClick={moveLeft}
                 >
                     <FiArrowLeft size={15} />
                 </button>
@@ -46,7 +46,7 @@ export default function TaskComponent({ task, onDelete, darkMode, moveRight }) {
               ${darkMode
                 ? "border bg-gray-700 text-white hover:bg-blue-500"
                 : "border bg-gray-400 text-black hover:bg-blue-400"}`}
-            onClick={moveRight}
+            onClick={moveLeft}
           >
             <FiArrowLeft size={15} />
         </button>
