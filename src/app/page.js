@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Task from "./containers/Task";
 import { FiSun, FiMoon } from "react-icons/fi";
-import { DndContext } from '@dnd-kit/core';
+import { DndContext, DragOverlay } from '@dnd-kit/core';
 import DroppableColumn from '@/components/DroppableColumn';
 
 export default function KantanKanban() {
@@ -10,6 +10,8 @@ export default function KantanKanban() {
   const [tasks, setTasks] = useState([]);
   const [createTask, setCreateTask] = useState(false);
   const [newTaskDesc, setNewTaskDesc] = useState("");
+  const [activeTask, setActiveTask] = useState(null);
+  const [overColumn, setOverColumn] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem("tasks")) {
@@ -81,6 +83,12 @@ export default function KantanKanban() {
       })
     );
   };
+
+  const handleDragStart = (e) => {
+    const { active } = e;
+    const draggedTask = tasks.find((task) => task.id.toString() === active.id);
+    setActiveTask(draggedTask);
+  };
   
   const handleDragEnd = (e) => {
     const { active, over } = e;
@@ -96,8 +104,13 @@ export default function KantanKanban() {
     )
   };
 
+  const handleDragOver = (e) => {
+    const { over } = e;
+    setOverColumn(over ? over.id : null)
+  }
+
   return (
-    <div className={`${darkMode ? "dark" : ""} min-h-screen`}>
+    <div className={`${darkMode ? "dark" : ""} min-h-screen max-h-screen`}>
       <div
         className={`font-sans relative grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 transition-all duration-300 ${
           createTask ? "backdrop-blur-sm" : ""
@@ -148,8 +161,8 @@ export default function KantanKanban() {
         )}
 
         <main className="grid grid-rows-2 grid-cols-3 gap-[32px] row-start-2 items-start">
-          <DndContext onDragEnd={handleDragEnd}>
-            <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
+          <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
+            <div className="col col-span-1 text-center border border-gray-400 rounded-md px-5 py-2">
               <b>To Do</b>
               <DroppableColumn id={'toDo'} colour={'blue'}>
                 {tasks
@@ -161,12 +174,13 @@ export default function KantanKanban() {
                       onDelete={() => handleDelete(task.id)}
                       darkMode={darkMode}
                       moveRight={() => {handleMoveRight(task.id)}}
+                      currentHover={overColumn}
                     />
                   ))}
               </DroppableColumn>
             </div>
 
-            <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
+            <div className="col col-span-1 text-center border border-gray-400 rounded-md px-5 py-2">
               <b>In Progress</b>
               <DroppableColumn id={'inProgress'} colour={'yellow'}>
                 {tasks
@@ -179,12 +193,13 @@ export default function KantanKanban() {
                       darkMode={darkMode}
                       moveRight={() => {handleMoveRight(task.id)}}
                       moveLeft={() => {handleMoveLeft(task.id)}}
+                      currentHover={overColumn}
                     />
                   ))}
               </DroppableColumn>
             </div>
 
-            <div className="col col-span-1 text-center border border-gray-400 rounded-md p-2">
+            <div className="col col-span-1 text-center border border-gray-400 rounded-md px-5 py-2">
               <b>Complete</b>
               <DroppableColumn id={'complete'} colour={'green'}>
                 {tasks
@@ -196,10 +211,24 @@ export default function KantanKanban() {
                       onDelete={() => handleDelete(task.id)}
                       darkMode={darkMode}
                       moveLeft={() => {handleMoveLeft(task.id)}}
+                      currentHover={overColumn}
                     />
                   ))}
               </DroppableColumn>
             </div>
+            <DragOverlay>
+              {activeTask ? (
+                <div className="shadow-lg scale-105 cursor-grabbing">
+                  <Task
+                    task={activeTask}
+                    darkMode={darkMode}
+                    onDelete={() => {}}
+                    currentHover={overColumn}
+                    isOverlay={true}
+                  />
+                </div>
+              ) : null}
+            </DragOverlay>
           </DndContext>
         </main>
 

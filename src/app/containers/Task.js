@@ -2,6 +2,6 @@ import React from 'react';
 import TaskComponent from '@/components/TaskComponent';
 
 export default function Task({ task, onDelete, darkMode, moveRight, moveLeft }) {
-    return <TaskComponent task={task} onDelete={onDelete} darkMode={darkMode} moveRight={moveRight} moveLeft={moveLeft} />;
+    return <TaskComponent task={task} onDelete={onDelete} darkMode={darkMode} moveRight={moveRight} moveLeft={moveLeft}  />;
 }
   
