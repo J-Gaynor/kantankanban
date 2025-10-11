@@ -110,9 +110,9 @@ export default function KantanKanban() {
   }
 
   return (
-    <div className={`${darkMode ? "dark" : ""} min-h-screen max-h-screen`}>
+    <div className={`${darkMode ? "dark" : ""} h-screen`}>
       <div
-        className={`font-sans relative grid grid-rows-[20px_1fr_20px] min-h-screen p-8 pb-20 gap-16 sm:p-20 transition-all duration-300 ${
+          className={`font-sans relative grid grid-rows-[auto_1fr_auto] h-screen overflow-hidden px-20 pb-10 pt-4 transition-all duration-300 ${
           createTask ? "backdrop-blur-sm" : ""
         }`}
         style={{
@@ -120,6 +120,7 @@ export default function KantanKanban() {
           color: "var(--foreground)",
         }}
       >
+        <h1 className='text-center titleFont font-size-xl z-10'>Kantan Kanban</h1>
         {createTask && (
           <div className="absolute inset-0 flex items-center justify-center z-10">
             <div
@@ -160,9 +161,9 @@ export default function KantanKanban() {
           </div>
         )}
 
-        <main className="grid grid-rows-2 grid-cols-3 gap-[32px] row-start-2 items-start">
+        <main className="grid grid-cols-3 gap-[32px] row-start-2 items-start pt-10 overflow-y-auto">
           <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart} onDragOver={handleDragOver}>
-            <div className="col col-span-1 text-center border border-gray-400 rounded-md px-5 py-2">
+            <div className="col col-span-1 text-center border border-gray-400 rounded-md px-5 py-2 ]">
               <b>To Do</b>
               <DroppableColumn id={'toDo'} colour={'blue'}>
                 {tasks

@@ -4,7 +4,11 @@ module.exports = {
       "./src/**/*.{js,jsx,ts,tsx}", // all your source files
     ],
     theme: {
-      extend: {}, // add custom colors, fonts, etc. here if you want
+      extend: {
+        fontFamily: {
+          HittoSushi: ['HittoSushi', 'sans-serif'],
+        },
+      },
     },
     plugins: [],
     darkMode: "class", // enables dark mode via 'dark' class

@@ -63,7 +63,7 @@ export default function TaskComponent({
               moveRight();
             }}
           >
-            <FiArrowRight size={10} />
+            <FiArrowRight size={13} />
           </button>
         )}
 
@@ -79,7 +79,7 @@ export default function TaskComponent({
                 moveLeft();
               }}
             >
-              <FiArrowLeft size={10} />
+              <FiArrowLeft size={13} />
             </button>
             <button
               className={`rounded-full w-6 h-6 flex items-center justify-center transition-all duration-200 hover:scale-110
@@ -91,7 +91,7 @@ export default function TaskComponent({
                 moveRight();
               }}
             >
-              <FiArrowRight size={10} />
+              <FiArrowRight size={13} />
             </button>
           </>
         )}
@@ -107,7 +107,7 @@ export default function TaskComponent({
               moveLeft();
             }}
           >
-            <FiArrowLeft size={10} />
+            <FiArrowLeft size={13} />
           </button>
         )}
 
@@ -116,12 +116,12 @@ export default function TaskComponent({
             e.stopPropagation();
             onDelete();
           }}
-          className={`rounded-full w-6 h-6 flex items-center justify-center transition-all duration-200 hover:scale-110
+          className={`rounded-full w-6 h-6 flex items-center justify-center transition-all duration-200
             ${darkMode
               ? "border bg-gray-700 text-white hover:bg-red-500"
               : "border bg-gray-400 text-black hover:bg-red-400"}`}
         >
-          <FiTrash size={10} />
+          <FiTrash size={13} />
         </button>
       </div>
     </div>

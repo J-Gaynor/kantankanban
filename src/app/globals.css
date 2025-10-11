@@ -8,10 +8,22 @@
   }
 }
 
+@font-face {
+  font-family: 'HittoSushi';
+  src: url('/fonts/HittoSushi.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
   --font-sans: 'Geist Sans', Arial, Helvetica, sans-serif;
+}
+
+.titleFont {
+  font-family: 'HittoSushi', sans-serif;  
+  font-size: 2rem;
 }
 
 .dark {

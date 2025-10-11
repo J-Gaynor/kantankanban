@@ -8,7 +8,7 @@ export default function DroppableColumn({id, colour, children}) {
                 bg-${colour}-400/20 ${isOver ? 'scale-111' : 'scale-100'}`} 
                 style={{zIndex: 0}}
             />
-            <div className='relative z-10 space-y-2'>
+            <div className='relative z-10 space-y-2 overflow-y-auto max-h-[53vh]'>
                 {children}
             </div>
         </div>
