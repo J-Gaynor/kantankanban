@@ -240,12 +240,6 @@ export default function KantanKanban() {
           >
             <b>+</b>
           </button>
-          <button className="btn border rounded-full bg-red-400 w-10 h-10 cursor-pointer hover:scale-120 transition-all duration-200">
-            <b>–</b>
-          </button>
-          <button className="btn border rounded-full bg-blue-400 w-10 h-10 cursor-pointer hover:scale-120 transition-all duration-200">
-            <b>?</b>
-          </button>
           <button
             onClick={toggleDarkMode}
             className={`btn border rounded-full h-10 w-10 flex items-center justify-center hover:scale-120 transition-all duration-200 cursor-pointer ${
